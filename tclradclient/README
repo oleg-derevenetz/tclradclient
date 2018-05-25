@@ -1,0 +1,32 @@
+TclRadClient
+======
+
+This package provides RADIUS client library written in pure Tcl.
+
+REQUIREMENTS
+============
+
+This package requires md5 library from tcllib package. To deal with RADIUS
+packets you will need tcludp package as well.
+
+INSTALLATION
+============
+
+Just create directory named "radclient1.0" in the $tcl_pkgPath and then copy
+radclient.tcl and pkgIndex.tcl to this directory.
+
+# tclsh
+% echo $tcl_pkgPath
+/usr/local/lib
+% exit
+# mkdir -p /usr/local/lib/radclient1.0
+# cp radclient.tcl pkgIndex.tcl /usr/local/lib/radclient1.0
+
+FEEDBACK
+========
+
+If you have any problem with this extension, please contact Oleg Derevenetz.
+
+Name  : Oleg Derevenetz
+Email : oleg.derevenetz@gmail.com
+URL   : http://tclradclient.sourceforge.net

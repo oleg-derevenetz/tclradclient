@@ -1,0 +1,92 @@
+.TH "radclient" n 1.0 radclient "Pure Tcl RADIUS client library"
+.SH NAME
+.B radclient
+- pure Tcl RADIUS client library.
+.SH SYNOPSIS
+package require \fBTcl 8.2\fR
+.sp
+package require \fBradclient ?1.0?\fR
+.sp
+\fB::radclient::dict_set_path\fR \fIdict_path\fR
+.sp
+\fB::radclient::dict_parse\fR \fIdict_name\fR
+.sp
+\fB::radclient::dict_get_attr_by_id\fR \fIvendor\fR \fIattr_id\fR
+.sp
+\fB::radclient::dict_get_attr_by_name\fR \fIattr_name\fR
+.sp
+\fB::radclient::dict_get_val_by_id\fR \fIval_attr\fR \fIval_id\fR
+.sp
+\fB::radclient::dict_get_val_by_name\fR \fIval_attr\fR \fIval_name\fR
+.sp
+\fB::radclient::make_auth_vector\fR
+.sp
+\fB::radclient::make_acct_vector\fR
+.sp
+\fB::radclient::packet_parse\fR \fIbody\fR \fIsecret\fR
+.sp
+\fB::radclient::make_packet\fR \fIpkt\fR \fIsecret\fR \fImake_auth\fR
+.SH DESCRIPTION
+.PP Tcl package provides RADIUS client library written in pure Tcl.
+.TP
+\fB::radclient::dict_set_path\fR \fIdict_path\fR
+Specifies path do dictionary directory. Default dictionary directory is
+\fB"."\fR.
+.TP
+\fB::radclient::dict_parse\fR \fIdict_name\fR
+Parses dictionary file at path previously specified by \fBdict_set_path\fR,
+including all other dictionaries specified in \fIdict_name\fR using
+\fB$INCLUDE\fR directive.
+.TP
+\fB::radclient::dict_get_attr_by_id\fR \fIvendor\fR \fIattr_id\fR
+Returns dictionary attribute by vendor id and attribute id.
+Return value is the Tcl list that consists of attribute name and
+attribute type. If requested attribute is not a vendor-specific
+attribute, then you should use zero \fIvendor\fR value.
+.TP
+\fB::radclient::dict_get_attr_by_name\fR \fIattr_name\fR
+Returns dictionary attribute by attribute name. Return value is
+the Tcl list that consists of vendor id, attribute id and attribute
+type.
+.TP
+\fB::radclient::dict_get_val_by_id\fR \fIval_attr\fR \fIval_id\fR
+Returns dictionary value name by attribute name and value id.
+.TP
+\fB::radclient::dict_get_val_by_name\fR \fIval_attr\fR \fIval_name\fR
+Returns dictionary value id by attribute name and value name.
+.TP
+\fB::radclient::make_auth_vector\fR
+Returns random vector for RADIUS authenticator, suitable for authentication packets.
+.TP
+\fB::radclient::make_acct_vector\fR
+Returns zero-initialized vector for RADIUS authenticator, suitable for accounting packets.
+.TP
+\fB::radclient::packet_parse\fR \fIbody\fR \fIsecret\fR
+Decodes raw RADIUS packet specified in \fIbody\fR using secret \fIsecret\fR.
+Return value is the Tcl list that consists of AV pairs, suitable to use with
+\fBarray set\fR command.
+.TP
+\fB::radclient::make_packet\fR \fIpkt\fR \fIsecret\fR \fImake_auth\fR
+Assembles raw RADIUS packet from the list of AV pairs (\fIpkt\fR) using secret
+\fIsecret\fR. If \fImake_auth\fR is non-zero, then MD5-encrypted packet
+authenticator will be created.
+.SH NOTES
+There are some non-standard attributes that required by \fBmake_packet\fR
+or returned by \fBpacket_parse\fR. These attributes are:
+.TP
+\fIX-Id\fR
+Packet identifier.
+.TP
+\fIX-Vector\fR
+Vector returned by \fBmake_auth_vector\fR or \fBmake_acct_vector\fR.
+.TP
+\fIX-Code\fR
+Packet type.
+.PP
+See examples for more information.
+.SH AUTHORS
+Oleg Derevenetz <oleg.derevenetz@gmail.com>
+.SH BUGS
+None known.
+.SH "SEE ALSO"
+md5(n), udp(n)
