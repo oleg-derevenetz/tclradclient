@@ -51,13 +51,20 @@ namespace eval ::radclient {
 
         if {[regexp {^\s*\$INCLUDE\s+([^\s]+)} $line dummy incl_file]} {
             dict_parse $incl_file
-        } elseif {[regexp {^\s*VENDOR\s+[^\s]+\s+(\d+)} $line dummy vendor]} {
-        } elseif {[regexp {^\s*ATTRIBUTE\s+([^\s]+)\s+(\d+)\s+([^\s]+)} $line dummy attr_name attr_id attr_type]} {
-            set DICT_ATTR_ID([list $vendor $attr_id])     [list $attr_name $attr_type]
-            set DICT_ATTR_NAME($attr_name)                [list $vendor $attr_id $attr_type]
-        } elseif {[regexp {^\s*VALUE\s+([^\s]+)\s+([^\s]+)\s+(\d+)} $line dummy val_attr val_name val_id]} {
-            set DICT_VAL_ID([list $val_attr $val_id])     $val_name
-            set DICT_VAL_NAME([list $val_attr $val_name]) $val_id
+        } elseif {[regexp {^\s*VENDOR\s+[^\s]+\s+([xXoO[:xdigit:]]+)} $line dummy vnd]} {
+            if {![catch {expr $vnd}]} {
+                set vendor [expr $vnd]
+            }
+        } elseif {[regexp {^\s*ATTRIBUTE\s+([^\s]+)\s+([xXoO[:xdigit:]]+)\s+([^\s]+)} $line dummy attr_name attr_id attr_type]} {
+            if {![catch {expr $attr_id}]} {
+                set DICT_ATTR_ID([list $vendor [expr $attr_id]]) [list $attr_name $attr_type]
+                set DICT_ATTR_NAME($attr_name)                   [list $vendor [expr $attr_id] $attr_type]
+            }
+        } elseif {[regexp {^\s*VALUE\s+([^\s]+)\s+([^\s]+)\s+([xXoO[:xdigit:]]+)} $line dummy val_attr val_name val_id]} {
+            if {![catch {expr $val_id}]} {
+                set DICT_VAL_ID([list $val_attr $val_id])     $val_name
+                set DICT_VAL_NAME([list $val_attr $val_name]) [expr $val_id]
+            }
         }
         return $vendor
     }
