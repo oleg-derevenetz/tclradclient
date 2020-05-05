@@ -62,8 +62,8 @@ namespace eval ::radclient {
             }
         } elseif {[regexp {^\s*VALUE\s+([^\s]+)\s+([^\s]+)\s+([xXoO[:xdigit:]]+)} $line dummy val_attr val_name val_id]} {
             if {![catch {expr $val_id}]} {
-                set DICT_VAL_ID([list $val_attr $val_id])     $val_name
-                set DICT_VAL_NAME([list $val_attr $val_name]) [expr $val_id]
+                set DICT_VAL_ID([list $val_attr [expr $val_id]]) $val_name
+                set DICT_VAL_NAME([list $val_attr $val_name])    [expr $val_id]
             }
         }
         return $vendor
